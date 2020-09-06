@@ -8,8 +8,7 @@
             </div>
 
             <div class="button" @click="onMinimize"><span class="dash">&#x2012;</span></div>
-            <div class="button" :class="{'d-none': isMax}" @click="onMaximize"><span>&#9744;</span></div>
-            <div class="button unMax" :class="{'d-none': !isMax}" @click="unMaximize"><span>&#9744;</span><span id="second" class="square"></span></div>
+            <div class="button" @click="onMaximize"><span>&#9744;</span></div>
             <div class="button close" @click="onClose"><span>&#10005;</span></div>
         </div>
     </div>
@@ -25,11 +24,6 @@ let win = remote.getCurrentWindow()
 export default {
     name: 'TitleBar',
     props: [ 'title', 'ico' ],
-    data() {
-        return {
-            isMax: win.isMaximized()
-        }
-    },
     methods: {
         onClose() {
             close()
@@ -38,12 +32,11 @@ export default {
             win.minimize()
         },
         onMaximize() {
-            win.maximize()
-            this.isMax = win.isMaximized()
-        },
-        unMaximize() {
-            win.unmaximize()
-            this.isMax = win.isMaximized()
+            if(win.isMaximized()) 
+               win.unmaximize()
+            else
+               win.maximize()
+            
         },
         atualizaMax(isMax) {
             console.log(isMax)
@@ -60,27 +53,6 @@ export default {
     --btn-hover-color: rgb(0, 0, 0, 0.1);
 }
 
-
-.d-none {
-    display: none !important;
-    height: 0;
-    width: 0;
-    margin: 0;
-}
-
-.unMax {
-    display: flex;
-    justify-content: center;
-}
-.unMax span {
-    position: absolute;
-}
-.unMax span#second {
-    position: relative;
-    margin-top:.9px;
-    margin-right: 3.8px;
-    background-color: white;
-}
 
 .square {
     height: 9px;
